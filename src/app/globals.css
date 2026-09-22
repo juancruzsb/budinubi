@@ -1,13 +1,17 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --blue: rgb(31, 151, 202);
+  --blue-dark: rgb(20, 123, 167);
+  --blue-bg: rgb(234, 247, 252);
+  --white: rgb(255, 255, 255);
+  --black: rgb(0, 0, 0);
+  --gutter: max(5%, (100% - 1300px) / 2);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+h1,
+h2,
+h3,
+p {
+  margin: 0;
 }
 
 html {
@@ -22,28 +26,26 @@ body {
 
 body {
   min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background: var(--white);
+  font-family: var(--font-nunito-sans), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 * {
   box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 a {
-  color: inherit;
+  color: var(--blue);
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+a:hover {
+  color: var(--blue-dark);
+}
+
+img {
+  max-width: 100%;
 }
