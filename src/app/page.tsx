@@ -1,3 +1,6 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import styles from "./page.module.css";
 
@@ -58,8 +61,32 @@ const contactos = [
 ];
 
 export default function Home() {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const revealEls = containerRef.current?.querySelectorAll(
+      `.${styles.reveal}`
+    );
+    if (!revealEls || revealEls.length === 0) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add(styles.revealed);
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    revealEls.forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
   return (
-    <div className={styles.page}>
+    <div className={styles.page} ref={containerRef}>
       {/* Portada */}
       <div className={styles.hero}>
         <header className={styles.header}>
@@ -98,7 +125,10 @@ export default function Home() {
               Budines artesanales que combinan sabor, calidad y dedicación
               para acompañar tus momentos especiales.
             </p>
-            <button className={styles.ctaButton} type="button">
+            <button
+              className={`${styles.ctaButton} ${styles.heroCta}`}
+              type="button"
+            >
               Descubrí nuestra esencia
               <span className={styles.arrow}>→</span>
             </button>
@@ -116,7 +146,7 @@ export default function Home() {
 
       {/* Nuestra esencia */}
       <section className={styles.essence}>
-        <div className={styles.essenceImages}>
+        <div className={`${styles.essenceImages} ${styles.reveal}`}>
           <div className={styles.essenceImagePrimary}>
             <Image
               src="/assets/budin-cacao.jpg"
@@ -134,7 +164,10 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className={styles.essenceContent}>
+        <div
+          className={`${styles.essenceContent} ${styles.reveal}`}
+          style={{ transitionDelay: "120ms" }}
+        >
           <div className={styles.essenceHeading}>
             <span className={styles.eyebrow}>Nuestra esencia</span>
             <h2 className={styles.sectionTitle}>
@@ -161,7 +194,7 @@ export default function Home() {
 
       {/* Cómo lo hacemos */}
       <section className={styles.process}>
-        <div className={styles.processHeader}>
+        <div className={`${styles.processHeader} ${styles.reveal}`}>
           <div className={styles.processHeading}>
             <span className={styles.eyebrow}>Cómo lo hacemos</span>
             <h2 className={styles.sectionTitle}>
@@ -175,8 +208,12 @@ export default function Home() {
           </p>
         </div>
         <div className={styles.stepsGrid}>
-          {pasos.map((paso) => (
-            <div key={paso.numero} className={styles.stepCard}>
+          {pasos.map((paso, index) => (
+            <div
+              key={paso.numero}
+              className={`${styles.stepCard} ${styles.reveal}`}
+              style={{ transitionDelay: `${index * 100}ms` }}
+            >
               <div className={styles.stepNumber}>{paso.numero}</div>
               <div className={styles.stepBody}>
                 <div className={styles.stepTitleRow}>
@@ -198,7 +235,7 @@ export default function Home() {
 
       {/* Valores y visión */}
       <section className={styles.values}>
-        <div className={styles.valuesHeader}>
+        <div className={`${styles.valuesHeader} ${styles.reveal}`}>
           <div className={styles.valuesHeading}>
             <span className={styles.eyebrow}>Lo que nos guía</span>
             <h2 className={styles.sectionTitle}>
@@ -212,8 +249,12 @@ export default function Home() {
           </p>
         </div>
         <div className={styles.valuesGrid}>
-          {valores.map((valor) => (
-            <div key={valor.titulo} className={styles.valueCard}>
+          {valores.map((valor, index) => (
+            <div
+              key={valor.titulo}
+              className={`${styles.valueCard} ${styles.reveal}`}
+              style={{ transitionDelay: `${index * 80}ms` }}
+            >
               <span className={styles.valueTitle}>{valor.titulo}</span>
               <span className={styles.valueDesc}>{valor.descripcion}</span>
             </div>
@@ -224,7 +265,7 @@ export default function Home() {
       {/* Cierre */}
       <div className={styles.closing}>
         <div className={styles.closingInner}>
-          <div className={styles.closingContent}>
+          <div className={`${styles.closingContent} ${styles.reveal}`}>
             <h2 className={styles.closingTitle}>
               Hay un budín esperando ser parte de tu próximo momento
               especial.
@@ -237,7 +278,10 @@ export default function Home() {
               <span className={styles.arrow}>→</span>
             </button>
           </div>
-          <div className={styles.closingImageWrap}>
+          <div
+            className={`${styles.closingImageWrap} ${styles.reveal}`}
+            style={{ transitionDelay: "150ms" }}
+          >
             <div className={styles.closingCircle}>
               <div className={styles.closingLogo}>
                 <Image
